@@ -37,7 +37,7 @@ export default function RootLayout({
         {/* MAIN CONTENT */}
         <main>{children}</main>
 
-        {/* FOOTER (if you want it global) */}
+        {/* FOOTER*/}
         <footer></footer>
       </body>
     </html>

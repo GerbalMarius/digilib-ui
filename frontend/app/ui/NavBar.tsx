@@ -4,23 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-type MenuState = "closed" | "opening" | "open" | "closing";
+import {MenuState, NavBarProps} from "./navbar-types"
 
-type NavLink = {
-    label: string;
-    href: string;
-};
-
-interface NavBarProps {
-    links: NavLink[];
-    orientation?: "horizontal" | "vertical";
-    showLogo?: boolean;
-    brandName?: string;
-    logoSrc?: string;
-    showButton?: boolean;
-    buttonLabel?: string;
-    buttonHref?: string;
-}
 
 export default function NavBar({
     links,
@@ -29,7 +14,6 @@ export default function NavBar({
     brandName = "Digilib",
     logoSrc = "/img/logo.svg",
     showButton = false,
-    buttonLabel = "Login",
     buttonHref = "/auth",
 }: NavBarProps) {
     const [menuState, setMenuState] = useState<MenuState>("closed");
@@ -120,13 +104,15 @@ export default function NavBar({
                         <div className="hamburger-line"></div>
                     </button>
 
-                    {/* Desktop Nav (ONLY desktop stuff here) */}
+                    {/* Desktop Nav */}
                     <div className={desktopNavClasses}>
-                        {links.map((link) => (
-                            <Link key={link.href} href={link.href} className="underline-hover">
-                                {link.label}
-                            </Link>
-                        ))}
+                        {links
+                            .filter(link => link.href !== '/auth')
+                            .map(link => (
+                                <Link key={link.href} href={link.href} className="underline-hover">
+                                    {link.label}
+                                </Link>
+                            ))}
 
                         {/* AUTH DROPDOWN (desktop) */}
                         {showButton && (
@@ -155,8 +141,8 @@ export default function NavBar({
 
                                 {authOpen && (
                                     <div className="absolute right-0 mt-3 w-40 rounded-xl bg-amber-50/95 
-                  dark:bg-amber-900/95 shadow-lg border border-amber-200/60 dark:border-amber-800/80 py-2
-                  transition-all duration-300 ease-out"
+                                    dark:bg-amber-900/95 shadow-lg border border-amber-200/60 dark:border-amber-800/80 py-2
+                                    transition-all duration-300 ease-out"
                                     >
                                         <Link
                                             href={buttonHref}
@@ -172,7 +158,7 @@ export default function NavBar({
                     </div>
                 </div>
 
-                {/* 👇 MOBILE NAV: now sibling of the flex row, not inside the hidden md:flex div */}
+                {/* MOBILE NAV*/}
                 <section
                     id="mobile-menu"
                     ref={menuRef}

@@ -8,7 +8,7 @@ const HomePage = () => {
         links={[
           { label: "About us", href: "/about" },
           { label: "Features", href: "/features" },
-          {label: "Log in", href: "/"}
+          {label: "Log in", href: "/auth"}
         ]}
         showButton={true}
         buttonHref="/auth"

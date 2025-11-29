@@ -7,16 +7,16 @@
   --font-roboto: var(--font-roboto);
   --font-poppins: var(--font-poppins);
 
+  --bg: radial-gradient(circle at top left, #ffffff 0%, #fffaf2 20%, #ffe9d0 45%, #ffd7aa 65%, #f8cda4 80%, #f3e3cf 100%);
+  --fg: #2a1a0c;
 
-  --bg: linear-gradient(to bottom right, #fff7eb, #ffebc1, #f6d089);
-  --fg: #2c1907;
-
-  --amber-1: #f6d089;
-  --amber-2: #e9b568;
-  --amber-3: #d69e46;
-  --amber-4: #b97c1d;
-  --amber-5: #8c5410;
+  --amber-1: #f8d8a8;
+  --amber-2: #f0bf82;
+  --amber-3: #d79952;
+  --amber-4: #b67633;
+  --amber-5: #8a4f1c;
 }
+
 
 @keyframes open-menu {
   0% {
@@ -39,6 +39,23 @@
 
   100% {
     transform: scaleY(0);
+  }
+}
+
+@keyframes bg-breathe {
+  0% {
+    background-position: 0% 0%;
+    filter: brightness(1);
+  }
+
+  50% {
+    background-position: 100% 100%;
+    filter: brightness(1.03);
+  }
+
+  100% {
+    background-position: 0% 0%;
+    filter: brightness(1);
   }
 }
 
@@ -141,21 +158,26 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: linear-gradient(to bottom right, #3c270d, #2e1e08, #1a1204);
+    --bg: radial-gradient(circle at top left, #2b1a10 0%, #20130b 30%, #1a1208 55%, #140d06 75%, #0f0904 100%);
     --fg: #fcefe0;
 
-    --amber-1: #e9b568;
-    --amber-2: #d69e46;
-    --amber-3: #b97c1d;
-    --amber-4: #8c5410;
-    --amber-5: #6b3f0e;
+    --amber-1: #f0bf82;
+    --amber-2: #e3a865;
+    --amber-3: #c5873f;
+    --amber-4: #9e6326;
+    --amber-5: #7a4518;
   }
 }
 
 body {
+  body {
   background: var(--bg);
+  background-size: 200% 200%;
   color: var(--fg);
   min-height: 100vh;
   font-family: var(--font-body);
   line-height: 1.6;
+  
+  animation: bg-breathe 18s ease-in-out infinite;
+}
 }
