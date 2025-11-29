@@ -1,15 +1,22 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Poppins, Roboto } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const roboto = Roboto({
+  weight: ["100", "300", "400", "500", "700", "900"],
+  style: ["normal", "italic"],
   subsets: ["latin"],
+  variable: "--font-roboto",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const poppins = Poppins({
+  weight: [
+    "100", "200", "300", "400", "500",
+    "600", "700", "800", "900",
+  ],
+  style: ["normal"],
   subsets: ["latin"],
+  variable: "--font-poppins",
 });
 
 export const metadata: Metadata = {
@@ -23,23 +30,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en-US">
-      <body className="min-h-screen">
-
-        <header>
-
-        </header>
-
+    <html lang="en-US" className={`${roboto.variable} ${poppins.variable}`}>
+      <head>
+      </head>
+      <body>
         {/* MAIN CONTENT */}
-        <main className="mx-auto max-w-7xl px-6 py-10">
-          {children}
-        </main>
+        <main>{children}</main>
 
-        {/* FOOTER */}
-        <footer>
-          © {new Date().getFullYear()} Digilib
-        </footer>
-
+        {/* FOOTER (if you want it global) */}
+        <footer></footer>
       </body>
     </html>
   );

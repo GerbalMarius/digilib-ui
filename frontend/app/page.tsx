@@ -1,10 +1,25 @@
-export default function Home() {
+import NavBar from "./ui/NavBar";
 
+
+const HomePage = () => {
   return (
-    <div className="bg-blue-200">
-    Labas
-    </div>
+    <>
+      <NavBar
+        links={[
+          { label: "About us", href: "/about" },
+          { label: "Features", href: "/features" },
+          {label: "Log in", href: "/"}
+        ]}
+        showButton={true}
+        buttonHref="/auth"
+        orientation="horizontal"
+      />
+
+      <section id="hero">
+        {/* hero section... */}
+      </section>
+    </>
   );
-}
+};
 
-
+export default HomePage;
