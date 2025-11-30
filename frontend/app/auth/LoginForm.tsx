@@ -5,10 +5,17 @@ import Image from "next/image";
 
 interface LoginFormProps {
   isActive: boolean;
+  isSubmitting: boolean;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  errors: string[];
 }
 
-const LoginForm = ({ isActive, onSubmit }: LoginFormProps) => {
+const LoginForm = ({
+  isActive,
+  isSubmitting,
+  onSubmit,
+  errors,
+}: LoginFormProps) => {
   const [showLoginPassword, setShowLoginPassword] = useState(false);
 
   return (
@@ -20,6 +27,18 @@ const LoginForm = ({ isActive, onSubmit }: LoginFormProps) => {
           : "opacity-0 translate-y-4 pointer-events-none absolute inset-0"
       }`}
     >
+      {/* Error box */}
+      {errors && errors.length > 0 && (
+        <div className="mb-2 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+          <p className="font-semibold mb-1">There was a problem with your login:</p>
+          <ul className="list-disc list-inside space-y-0.5">
+            {errors.map((err, idx) => (
+              <li key={idx}>{err}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       <div>
         <label className="block text-md md:text-lg font-medium text-slate-800 mb-1">
           Email
@@ -64,9 +83,23 @@ const LoginForm = ({ isActive, onSubmit }: LoginFormProps) => {
 
       <button
         type="submit"
-        className="hover:cursor-pointer mt-4 w-full rounded-xl bg-amber-700 text-white font-semibold py-3.5 text-base md:text-lg shadow-md hover:bg-amber-600 transition-colors"
+        disabled={isSubmitting}
+        className="relative mt-4 w-full rounded-xl bg-amber-700 text-white font-semibold
+        py-3.5 text-base md:text-lg shadow-md transition-colors
+        hover:bg-amber-600
+        disabled:opacity-75 disabled:cursor-not-allowed"
       >
-        Log in
+        {/* Text fades out when loading */}
+        <span className={isSubmitting ? "opacity-0" : "opacity-100"}>
+          Log in
+        </span>
+
+        {/* Centered spinner overlay */}
+        {isSubmitting && (
+          <span className="absolute inset-0 flex items-center justify-center">
+            <span className="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+          </span>
+        )}
       </button>
     </form>
   );

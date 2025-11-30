@@ -5,21 +5,43 @@ import Image from "next/image";
 
 interface RegisterFormProps {
   isActive: boolean;
+  isSubmitting: boolean;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  errors: string[];
 }
 
-const RegisterForm = ({ isActive, onSubmit }: RegisterFormProps) => {
+const RegisterForm = ({
+  isActive,
+  isSubmitting,
+  onSubmit,
+  errors,
+}: RegisterFormProps) => {
   const [showRegPassword, setShowRegPassword] = useState(false);
   const [showRegRepeatPassword, setShowRegRepeatPassword] = useState(false);
 
   return (
     <form
       onSubmit={onSubmit}
-      className={`space-y-4 transition-all duration-300 ${isActive
+      className={`space-y-4 transition-all duration-300 ${
+        isActive
           ? "opacity-100 translate-y-0 pointer-events-auto"
           : "opacity-0 translate-y-4 pointer-events-none absolute inset-0"
-        }`}
+      }`}
     >
+      {/* Error box */}
+      {errors && errors.length > 0 && (
+        <div className="mb-2 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+          <p className="font-semibold mb-1">
+            There was a problem with your registration:
+          </p>
+          <ul className="list-disc list-inside space-y-0.5">
+            {errors.map((err, idx) => (
+              <li key={idx}>{err}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-slate-800 mb-1">
@@ -113,9 +135,7 @@ const RegisterForm = ({ isActive, onSubmit }: RegisterFormProps) => {
             onClick={() => setShowRegRepeatPassword((v) => !v)}
             className="absolute inset-y-0 right-0 px-4 flex items-center justify-center"
             aria-label={
-              showRegRepeatPassword
-                ? "Hide repeat password"
-                : "Show repeat password"
+              showRegRepeatPassword ? "Hide repeat password" : "Show repeat password"
             }
           >
             <Image
@@ -131,11 +151,23 @@ const RegisterForm = ({ isActive, onSubmit }: RegisterFormProps) => {
 
       <button
         type="submit"
-        className="mt-3 w-full rounded-xl 
+        disabled={isSubmitting}
+        className="relative mt-3 w-full rounded-xl 
         bg-amber-700 text-white font-semibold py-3.5 
-        text-base md:text-lg shadow-md hover:bg-amber-600 transition-colors"
+        text-base md:text-lg shadow-md hover:bg-amber-600 transition-colors
+        disabled:opacity-75 disabled:cursor-not-allowed"
       >
-        Register
+        {/* Text fades out when loading */}
+        <span className={isSubmitting ? "opacity-0" : "opacity-100"}>
+          Register
+        </span>
+
+        {/* Centered spinner overlay */}
+        {isSubmitting && (
+          <span className="absolute inset-0 flex items-center justify-center">
+            <span className="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+          </span>
+        )}
       </button>
     </form>
   );

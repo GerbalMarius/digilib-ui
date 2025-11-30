@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Poppins, Roboto } from "next/font/google";
 import "./globals.css";
+import { AuthProvider } from "./lib/auth-context";
+import { Providers } from "./lib/providers";
 
 const roboto = Roboto({
   weight: ["100", "300", "400", "500", "700", "900"],
@@ -35,7 +37,11 @@ export default function RootLayout({
       </head>
       <body>
         {/* MAIN CONTENT */}
-        <main>{children}</main>
+        <main>
+          <Providers>
+            {children}
+            </Providers>
+        </main>
 
         {/* FOOTER*/}
         <footer></footer>
