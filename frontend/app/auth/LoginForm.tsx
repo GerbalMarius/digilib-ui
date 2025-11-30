@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Spinner from "../ui/Spinner";
 
 interface LoginFormProps {
   isActive: boolean;
@@ -96,9 +97,7 @@ const LoginForm = ({
 
         {/* Centered spinner overlay */}
         {isSubmitting && (
-          <span className="absolute inset-0 flex items-center justify-center">
-            <span className="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-          </span>
+          <Spinner inline/>
         )}
       </button>
     </form>

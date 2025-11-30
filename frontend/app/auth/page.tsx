@@ -1,14 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 import { useAuth } from "../lib/auth-context";
 import { getErrorMessagesFromError } from "../lib/http-error";
+import { useRouter } from "next/navigation";
+import Spinner from "../ui/Spinner";
 
 const AuthPage = () => {
     const [activeTab, setActiveTab] = useState<"login" | "register">("login");
     const isLogin = activeTab === "login";
+
+    const router = useRouter();
 
     const [isRegisterSubmitting, setRegisterSubmitting] = useState(false);
     const [isLoginSubmitting, setLoginSubmitting] = useState(false);
@@ -16,7 +20,19 @@ const AuthPage = () => {
     const [loginErrors, setLoginErrors] = useState<string[]>([]);
     const [registerErrors, setRegisterErrors] = useState<string[]>([]);
 
-    const { login, register } = useAuth();
+    const { login, register, isAuthenticated, isLoading } = useAuth();
+
+    useEffect(() => {
+        if (!isLoading && isAuthenticated) {
+            router.replace("/user");
+        }
+    }, [isAuthenticated, isLoading, router]);
+
+    if (isLoading) {
+       return <Spinner/>;
+        
+    }
+    if (isAuthenticated) return null;
 
     async function handleLoginSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Poppins, Roboto } from "next/font/google";
 import "./globals.css";
-import { AuthProvider } from "./lib/auth-context";
 import { Providers } from "./lib/providers";
 
 const roboto = Roboto({

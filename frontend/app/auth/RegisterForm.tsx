@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Spinner from "../ui/Spinner";
 
 interface RegisterFormProps {
   isActive: boolean;
@@ -17,7 +18,6 @@ const RegisterForm = ({
   errors,
 }: RegisterFormProps) => {
   const [showRegPassword, setShowRegPassword] = useState(false);
-  const [showRegRepeatPassword, setShowRegRepeatPassword] = useState(false);
 
   return (
     <form
@@ -121,7 +121,7 @@ const RegisterForm = ({
         </label>
         <div className="relative">
           <input
-            type={showRegRepeatPassword ? "text" : "password"}
+            type={showRegPassword ? "text" : "password"}
             name="registerPasswordRepeat"
             placeholder="Repeat your password"
             required
@@ -132,14 +132,14 @@ const RegisterForm = ({
           />
           <button
             type="button"
-            onClick={() => setShowRegRepeatPassword((v) => !v)}
+            onClick={() => setShowRegPassword((v) => !v)}
             className="absolute inset-y-0 right-0 px-4 flex items-center justify-center"
             aria-label={
-              showRegRepeatPassword ? "Hide repeat password" : "Show repeat password"
+              showRegPassword ? "Hide repeat password" : "Show repeat password"
             }
           >
             <Image
-              src={showRegRepeatPassword ? "/img/eye-open.svg" : "/img/eye-closed.svg"}
+              src={showRegPassword ? "/img/eye-open.svg" : "/img/eye-closed.svg"}
               alt=""
               width={24}
               height={24}
@@ -164,9 +164,7 @@ const RegisterForm = ({
 
         {/* Centered spinner overlay */}
         {isSubmitting && (
-          <span className="absolute inset-0 flex items-center justify-center">
-            <span className="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-          </span>
+          <Spinner inline/>
         )}
       </button>
     </form>

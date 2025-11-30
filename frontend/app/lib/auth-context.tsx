@@ -10,9 +10,11 @@ import {
 import { axiosClient, axiosAuth } from "./axios-client";
 import { setTokens, clearTokens, getAccessToken } from "./token-service";
 
-type User = {
+interface User {
     id: string;
     email: string;
+    firstName : string;
+    lastName : string;
 };
 
 type AuthContextValue = {
@@ -35,7 +37,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             try {
                 const access = getAccessToken();
                 if (access) {
-                    const res = await axiosClient.get("/auth/me");
+                    const res = await axiosClient.get("/users/me");
                     setUser(res.data as User);
                 }
             } catch (err) {
@@ -58,7 +60,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setTokens(accessToken, "null");
 
         // Fetch full user from /auth/me
-        const me = await axiosClient.get("/auth/me");
+        const me = await axiosClient.get("/users/me");
         setUser(me.data as User);
     }
 
@@ -68,7 +70,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
         setTokens(accessToken, "null");
 
-        const me = await axiosClient.get("/auth/me");
+        const me = await axiosClient.get("/users/me");
         setUser(me.data as User);
     }
 

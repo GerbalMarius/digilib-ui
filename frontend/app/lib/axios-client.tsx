@@ -1,16 +1,15 @@
-
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 import { getAccessToken, setTokens, clearTokens } from "./token-service";
 import { BACK_URL } from "./fields";
 
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || BACK_URL;
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || BACK_URL;
 
 export const axiosClient = axios.create({
   baseURL: API_BASE_URL,
   withCredentials: true,
 });
 
+// no auth interceptor here
 export const axiosAuth = axios.create({
   baseURL: API_BASE_URL,
   withCredentials: true,
@@ -18,10 +17,12 @@ export const axiosAuth = axios.create({
 
 let isRefreshing = false;
 
+type RetriableConfig = InternalAxiosRequestConfig & { _retry?: boolean };
+
 type FailedRequest = {
   resolve: (value?: unknown) => void;
   reject: (error: unknown) => void;
-  config: InternalAxiosRequestConfig & { _retry?: boolean };
+  config: RetriableConfig;
 };
 
 let failedQueue: FailedRequest[] = [];
@@ -51,13 +52,24 @@ axiosClient.interceptors.request.use((config) => {
 axiosClient.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
-    const originalConfig = error.config as FailedRequest["config"] | undefined;
+    const originalConfig = error.config as RetriableConfig | undefined;
+    if (!originalConfig) return Promise.reject(error);
 
-    if (!originalConfig) {
-      return Promise.reject(error);
-    }
+    const status = error.response?.status;
+    const url = originalConfig.url || "";
+    const hasAccessToken = !!getAccessToken();
 
-    if (error.response?.status === 401 && !originalConfig._retry) {
+    const isAuthEndpoint =
+      url.startsWith("/auth/login") ||
+      url.startsWith("/auth/register") ||
+      url.startsWith("/auth/refresh");
+
+    if (
+      status === 401 &&
+      !originalConfig._retry &&
+      hasAccessToken &&
+      !isAuthEndpoint
+    ) {
       originalConfig._retry = true;
 
       if (isRefreshing) {
@@ -69,11 +81,12 @@ axiosClient.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        // Backend reads refresh token from cookie
-        const res = await axiosClient.post("/auth/refresh");
+
+        const res = await axiosAuth.post("/auth/refresh");
+        
         const newAccessToken = (res.data as any).accessToken;
 
-        // only store access token on client
+        // only store access token; refresh stays in HttpOnly cookie
         setTokens(newAccessToken, "null");
 
         processQueue(null, newAccessToken);
