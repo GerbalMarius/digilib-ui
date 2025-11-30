@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import {MenuState, NavBarProps} from "./navbar-types"
+import { MenuState, NavBarProps } from "./navbar-utils"
 
 
 export default function NavBar({
