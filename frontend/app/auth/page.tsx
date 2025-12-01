@@ -10,6 +10,8 @@ import Spinner from "../ui/Spinner";
 import { LoginFormValues, parseFormData, RegisterFormValues } from "../lib/form-utils";
 import Link from "next/link";
 
+import Image from "next/image";
+
 const AuthPage = () => {
     const [activeTab, setActiveTab] = useState<"login" | "register">("login");
     const isLogin = activeTab === "login";
@@ -30,10 +32,7 @@ const AuthPage = () => {
         }
     }, [isAuthenticated, isLoading, router]);
 
-    if (isLoading) {
-        return <Spinner />;
-
-    }
+    if (isLoading) return <Spinner />;
     if (isAuthenticated) return null;
 
     async function handleLoginSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -45,7 +44,7 @@ const AuthPage = () => {
         const { email, password } = parseFormData<LoginFormValues>(formData, {
             email: { key: "email" },
             password: { key: "password" }
-        })
+        });
 
         try {
             await login(email, password);
@@ -84,7 +83,6 @@ const AuthPage = () => {
             adminCode: { key: "adminCode", optional: true },
         });
 
-
         if (password !== passwordConfirmation) {
             setRegisterErrors(["Passwords do not match."]);
             setRegisterSubmitting(false);
@@ -100,7 +98,6 @@ const AuthPage = () => {
                 passwordConfirmation,
                 adminCode
             });
-            // optional success behavior
         } catch (err) {
             const messages = getErrorMessagesFromError(err, {
                 defaultMessage: "Unable to register. Please try again.",
@@ -118,8 +115,29 @@ const AuthPage = () => {
     };
 
     return (
-        <div className="min-h-[calc(100vh-6rem)] flex items-center justify-center px-6 py-12">
-            <div className="w-full max-w-6xl rounded-3xl bg-white/80 shadow-2xl backdrop-blur-md border border-amber-100 overflow-hidden flex flex-col md:flex-row scale-[1.03]">
+        <div className="relative min-h-[calc(100vh-6rem)] flex items-center justify-center px-6 py-12">
+            <Link
+                href="/"
+                className="absolute top-6 left-6 flex items-center gap-2
+                px-4 py-2 rounded-full bg-amber-700 backdrop-blur border border-amber-700 text-sm shadow-md 
+              hover:bg-amber-500 hover:border-amber-500
+                transform hover:translate-y-2 transition duration-300"
+            >
+                <Image
+                    src={"/img/leave.svg"}
+                    alt="leave-btn"
+                    width={40}
+                    height={40}
+                />
+            </Link>
+
+            {/* CARD */}
+            <div className="w-full 
+                max-w-6xl rounded-3xl 
+                bg-white/80 shadow-2xl backdrop-blur-md border border-amber-100 overflow-hidden 
+                flex flex-col md:flex-row scale-[1.03]
+                transition-transform duration-300 ease-out"
+            >
                 {/* LEFT SIDEBAR */}
                 <aside className="md:w-5/12 bg-linear-to-br from-amber-200 via-amber-300 to-amber-400 text-slate-900 px-8 py-10 flex flex-col justify-center">
                     <h2 className="font-heading text-3xl md:text-4xl font-bold mb-3">
@@ -176,13 +194,14 @@ const AuthPage = () => {
                         />
                     </div>
 
+                    {/* ADMIN LINK */}
                     <div className="mt-6 text-center text-xs md:text-sm text-slate-500">
                         Are you an administrator?{" "}
                         <Link
-                            href="/auth/admin/login"
+                            href={activeTab === "login" ? "/auth/admin/login" : "/auth/admin/register"}
                             className="font-semibold text-amber-700 hover:text-amber-800"
                         >
-                            Sign in as admin
+                            {activeTab === "login" ? "Sign in" : "Register"} as admin
                         </Link>
                         .
                     </div>

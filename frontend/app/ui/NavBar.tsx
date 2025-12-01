@@ -4,15 +4,16 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { MenuState, NavBarProps } from "./navbar-utils";
+import { useAuth } from "../lib/auth-context";
 
 const NavBar = ({ links,
-                  orientation = "horizontal",
-                  showLogo = true,
-                  brandName = "Digilib",
-                  logoSrc = "/img/logo.svg",
-                  showButton = false,
-                  buttonHref = "/auth",}: NavBarProps) => {
-                    
+  orientation = "horizontal",
+  showLogo = true,
+  brandName = "Digilib",
+  logoSrc = "/img/logo.svg",
+  showButton = false,
+  buttonHref = "/auth", }: NavBarProps) => {
+
   const [menuState, setMenuState] = useState<MenuState>("closed");
   const [authOpen, setAuthOpen] = useState<boolean>(false);
 
@@ -22,6 +23,9 @@ const NavBar = ({ links,
   const isActive = menuState === "opening" || menuState === "open";
   const isVisible = menuState !== "closed";
   const isHorizontal = orientation === "horizontal";
+
+
+  const { isAuthenticated, user, logout } = useAuth();
 
   const handleToggle = () => {
     if (menuState === "closed" || menuState === "closing") {
@@ -130,17 +134,46 @@ const NavBar = ({ links,
                 </button>
 
                 {authOpen && (
-                  <div
-                    className="absolute right-0 mt-2 w-40 rounded-xl bg-amber-50/95 
-                    shadow-lg border border-amber-200/80 py-2 text-sm"
-                  >
-                    <Link
-                      href={buttonHref}
-                      onClick={() => setAuthOpen(false)}
-                      className="block px-4 py-2 text-amber-900 hover:bg-amber-100/80 transition"
-                    >
-                      Login
-                    </Link>
+                  <div className="absolute right-0 mt-2 w-48 rounded-xl bg-amber-50/95 
+  shadow-lg border border-amber-200/80 py-2 text-sm">
+
+                    {/* If NOT logged in → show Login */}
+                    {!isAuthenticated && (
+                      <Link
+                        href={buttonHref}
+                        onClick={() => setAuthOpen(false)}
+                        className="block px-4 py-2 text-amber-900 hover:bg-amber-100/80 transition"
+                      >
+                        Login
+                      </Link>
+                    )}
+
+                    {/* If logged in → show email + user page + logout */}
+                    {isAuthenticated && (
+                      <>
+                        <div className="px-4 pb-2 text-xs text-amber-700 opacity-80">
+                          {user?.email}
+                        </div>
+
+                        <Link
+                          href="/user"
+                          onClick={() => setAuthOpen(false)}
+                          className="block px-4 py-2 text-amber-900 hover:bg-amber-100/80 transition"
+                        >
+                          User Page
+                        </Link>
+
+                        <button
+                          onClick={() => {
+                            logout();
+                            setAuthOpen(false);
+                          }}
+                          className="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 transition"
+                        >
+                          Logout
+                        </button>
+                      </>
+                    )}
                   </div>
                 )}
               </div>
@@ -167,9 +200,9 @@ const NavBar = ({ links,
           ref={menuRef}
           onAnimationEnd={handleAnimationEnd}
           className={[
-            "md:hidden fixed inset-x-0 top-20 bottom-0 z-40",
+            "md:hidden fixed inset-x-0  top-16 bottom-0 z-40",
             "text-3xl text-slate-900",
-            "origin-top backdrop-blur-md backdrop-saturate-150 bg-amber-50/80",
+            "origin-top backdrop-blur-md rounded-2xl backdrop-saturate-150 bg-amber-50/80",
             isVisible
               ? "flex flex-col justify-start items-end pr-6 text-right"
               : "hidden",

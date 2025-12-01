@@ -88,10 +88,10 @@ const AdminRegisterPage = () => {
     <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4 md:px-8">
       <div className="w-full max-w-3xl rounded-3xl bg-white/90 border border-amber-100 shadow-xl px-6 md:px-10 py-8 md:py-10">
         <h1 className="text-xl md:text-2xl font-semibold text-slate-900 mb-1">
-          Admin sign in
+          Admin registration 
         </h1>
         <p className="text-sm md:text-base text-slate-500 mb-6">
-          Use your administrative credentials to access the console.
+          Enter credentials to receive administrative access account
         </p>
 
         <AdminRegisterForm
