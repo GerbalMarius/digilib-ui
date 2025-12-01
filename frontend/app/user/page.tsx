@@ -6,8 +6,9 @@ import { useAuth } from "../lib/auth-context";
 import { axiosClient } from "../lib/axios-client";
 import Spinner from "../ui/Spinner";
 import { getErrorMessagesFromError } from "../lib/http-error";
+import { useToast } from "../lib/toast-context";
 
-interface UpdateFormState{
+interface UpdateFormState {
     email: string;
     firstName: string;
     lastName: string;
@@ -18,6 +19,8 @@ interface UpdateFormState{
 const UserPage = () => {
     const { user, isAuthenticated, isLoading, logout } = useAuth();
     const router = useRouter();
+
+    const { showToast } = useToast();
 
 
     const inputClasses =
@@ -59,7 +62,7 @@ const UserPage = () => {
     }, [user]);
 
     if (isLoading) {
-        return <Spinner/>;
+        return <Spinner />;
     }
 
     if (!isAuthenticated || !user) return null;
@@ -182,7 +185,11 @@ const UserPage = () => {
                 </nav>
 
                 <button
-                    onClick={logout}
+                    onClick={async () => {
+                        await logout();
+                        showToast("You’ve been logged out.", "info");
+                        router.push("/");
+                    }}
                     className="mt-6 inline-flex items-center justify-center gap-2 rounded-xl bg-amber-800 text-white text-sm font-semibold px-4 py-2 shadow-md hover:bg-amber-700 transition"
                 >
                     <span>Log out</span>

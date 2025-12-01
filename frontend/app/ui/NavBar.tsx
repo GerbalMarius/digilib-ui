@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { MenuState, NavBarProps } from "./navbar-utils";
 import { useAuth } from "../lib/auth-context";
+import { useToast } from "../lib/toast-context";
 
 const NavBar = ({ links,
   orientation = "horizontal",
@@ -23,6 +24,8 @@ const NavBar = ({ links,
   const isActive = menuState === "opening" || menuState === "open";
   const isVisible = menuState !== "closed";
   const isHorizontal = orientation === "horizontal";
+
+  const { showToast } = useToast();
 
 
   const { isAuthenticated, user, logout } = useAuth();
@@ -164,8 +167,9 @@ const NavBar = ({ links,
                         </Link>
 
                         <button
-                          onClick={() => {
-                            logout();
+                          onClick={async () => {
+                            await logout();
+                            showToast("You've been logged out", "info");
                             setAuthOpen(false);
                           }}
                           className="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 transition"

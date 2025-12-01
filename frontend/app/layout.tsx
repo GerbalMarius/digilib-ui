@@ -3,6 +3,8 @@ import { Poppins, Roboto } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./lib/providers";
 
+import { ToastProvider } from "./lib/toast-context";
+
 const roboto = Roboto({
   weight: ["100", "300", "400", "500", "700", "900"],
   style: ["normal", "italic"],
@@ -38,7 +40,9 @@ export default function RootLayout({
         {/* MAIN CONTENT */}
         <main>
           <Providers>
+            <ToastProvider>
             {children}
+            </ToastProvider>
             </Providers>
         </main>
 

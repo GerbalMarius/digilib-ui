@@ -11,12 +11,14 @@ import { LoginFormValues, parseFormData, RegisterFormValues } from "../lib/form-
 import Link from "next/link";
 
 import Image from "next/image";
+import { useToast } from "../lib/toast-context";
 
 const AuthPage = () => {
     const [activeTab, setActiveTab] = useState<"login" | "register">("login");
     const isLogin = activeTab === "login";
 
     const router = useRouter();
+    const { showToast } = useToast();
 
     const [isRegisterSubmitting, setRegisterSubmitting] = useState(false);
     const [isLoginSubmitting, setLoginSubmitting] = useState(false);
@@ -24,11 +26,26 @@ const AuthPage = () => {
     const [loginErrors, setLoginErrors] = useState<string[]>([]);
     const [registerErrors, setRegisterErrors] = useState<string[]>([]);
 
-    const { login, register, isAuthenticated, isLoading } = useAuth();
+    const { login, register, isAuthenticated, isLoading, user } = useAuth();
+
+    const [hasWelcomed, setHasWelcomed] = useState(false);
 
     useEffect(() => {
-        if (!isLoading && isAuthenticated) {
+        if (!hasWelcomed && isAuthenticated && user) {
+            showToast(
+                `Welcome back${user.firstName ? ", " + user.firstName : ""}!`,
+                "success"
+            );
+            setHasWelcomed(true);
+        }
+    })
+
+    useEffect(() => {
+        if (!isLoading && isAuthenticated && user?.roles.includes("ROLE_USER")) {
             router.replace("/user");
+        }
+        else if (!isLoading && isAuthenticated && user?.roles.includes("ROLE_ADMIN")) {
+            router.replace("/admin");
         }
     }, [isAuthenticated, isLoading, router]);
 
