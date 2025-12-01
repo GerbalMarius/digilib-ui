@@ -130,10 +130,11 @@ const RegisterForm = ({
       <button
         type="submit"
         disabled={isSubmitting}
-        className="relative mt-3 w-full rounded-xl 
+        className={`hover:${isSubmitting ? "cursor-not-allowed" : "cursor-pointer"}
+        relative mt-3 w-full rounded-xl 
         bg-amber-700 text-white font-semibold py-3.5 
         text-base md:text-lg shadow-md hover:bg-amber-600 transition-colors
-        disabled:opacity-75 disabled:cursor-not-allowed"
+        disabled:opacity-75 disabled:cursor-not-allowed`}
       >
         {/* Text fades out when loading */}
         <span className={isSubmitting ? "opacity-0" : "opacity-100"}>
