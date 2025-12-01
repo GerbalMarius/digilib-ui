@@ -29,8 +29,8 @@ const AuthPage = () => {
     }, [isAuthenticated, isLoading, router]);
 
     if (isLoading) {
-       return <Spinner/>;
-        
+        return <Spinner />;
+
     }
     if (isAuthenticated) return null;
 
@@ -63,13 +63,15 @@ const AuthPage = () => {
         setRegisterErrors([]);
 
         const formData = new FormData(e.currentTarget);
-        const name = (formData.get("name") as string) || undefined;
-        const lastName = (formData.get("lastName") as string) || undefined; // if needed
+        const firstName = (formData.get("name") as string)
+        const lastName = (formData.get("lastName") as string) // if needed
         const email = formData.get("registerEmail") as string;
         const password = formData.get("registerPassword") as string;
-        const passwordRepeat = formData.get("registerPasswordRepeat") as string;
+        const passwordConfirmation = formData.get("registerPasswordRepeat") as string;
 
-        if (password !== passwordRepeat) {
+        const adminCode = formData.get("adminCode") as string || undefined;
+
+        if (password !== passwordConfirmation) {
             setRegisterErrors(["Passwords do not match."]);
             setRegisterSubmitting(false);
             return;
@@ -78,9 +80,11 @@ const AuthPage = () => {
         try {
             await register({
                 email,
+                firstName,
+                lastName,
                 password,
-                name,
-                // lastName if your API expects it
+                passwordConfirmation,
+                adminCode
             });
             // optional success behavior
         } catch (err) {

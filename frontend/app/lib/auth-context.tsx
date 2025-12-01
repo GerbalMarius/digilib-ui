@@ -1,5 +1,4 @@
 'use client';
-
 import {
     createContext,
     useContext,
@@ -9,22 +8,9 @@ import {
 } from "react";
 import { axiosClient, axiosAuth } from "./axios-client";
 import { setTokens, clearTokens, getAccessToken } from "./token-service";
+import { AuthContextValue, RegisterData, User } from "./auth-types";
 
-interface User {
-    id: string;
-    email: string;
-    firstName : string;
-    lastName : string;
-};
 
-type AuthContextValue = {
-    user: User | null;
-    isLoading: boolean;
-    isAuthenticated: boolean;
-    login: (email: string, password: string) => Promise<void>;
-    register: (data: { email: string; password: string; name?: string }) => Promise<void>;
-    logout: () => Promise<void>;
-};
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
@@ -52,19 +38,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }, []);
 
     async function login(email: string, password: string) {
-        // Login without Authorization header
+        
         const res = await axiosAuth.post("/auth/login", { email, password });
         const { accessToken } = res.data;
 
-        // Set access token in storage so axiosClient can use it
+       
         setTokens(accessToken, "null");
 
-        // Fetch full user from /auth/me
+        
         const me = await axiosClient.get("/users/me");
         setUser(me.data as User);
     }
 
-    async function register(data: { email: string; password: string; name?: string }) {
+    async function register(data: RegisterData) {
         const res = await axiosAuth.post("/auth/register", data);
         const { accessToken } = res.data;
 

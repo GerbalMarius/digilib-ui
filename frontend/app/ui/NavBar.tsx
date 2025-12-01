@@ -5,15 +5,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { MenuState, NavBarProps } from "./navbar-utils";
 
-export default function NavBar({
-  links,
-  orientation = "horizontal",
-  showLogo = true,
-  brandName = "Digilib",
-  logoSrc = "/img/logo.svg",
-  showButton = false,
-  buttonHref = "/auth",
-}: NavBarProps) {
+const NavBar = ({ links,
+                  orientation = "horizontal",
+                  showLogo = true,
+                  brandName = "Digilib",
+                  logoSrc = "/img/logo.svg",
+                  showButton = false,
+                  buttonHref = "/auth",}: NavBarProps) => {
+                    
   const [menuState, setMenuState] = useState<MenuState>("closed");
   const [authOpen, setAuthOpen] = useState<boolean>(false);
 
@@ -125,9 +124,8 @@ export default function NavBar({
                     alt="arrow"
                     width={18}
                     height={18}
-                    className={`transition-transform duration-200 ${
-                      authOpen ? "rotate-180" : "rotate-0"
-                    }`}
+                    className={`transition-transform duration-200 ${authOpen ? "rotate-180" : "rotate-0"
+                      }`}
                   />
                 </button>
 
@@ -153,9 +151,8 @@ export default function NavBar({
           <button
             id="hamburger-button"
             ref={btnRef}
-            className={`md:hidden cursor-pointer hamburger-btn ${
-              isActive ? "toggle-btn" : ""
-            }`}
+            className={`md:hidden cursor-pointer hamburger-btn ${isActive ? "toggle-btn" : ""
+              }`}
             aria-expanded={isActive}
             aria-label="Toggle menu"
             onClick={handleToggle}
@@ -204,3 +201,5 @@ export default function NavBar({
     </header>
   );
 }
+
+export default NavBar;

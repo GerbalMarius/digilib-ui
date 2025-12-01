@@ -1,15 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Spinner from "../ui/Spinner";
 
-interface LoginFormProps {
-  isActive: boolean;
-  isSubmitting: boolean;
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  errors: string[];
-}
+import Eye from "../ui/Eye";
+import { LoginFormProps } from "./form-props";
 
 const LoginForm = ({
   isActive,
@@ -65,20 +60,12 @@ const LoginForm = ({
             required
             className="w-full font-medium rounded-xl border border-amber-200 px-4 py-3.5 text-base md:text-lg bg-white/80 pr-12 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
           />
-          <button
-            type="button"
-            onClick={() => setShowLoginPassword((v) => !v)}
-            className="absolute inset-y-0 right-0 px-3 flex items-center justify-center"
-            aria-label={showLoginPassword ? "Hide password" : "Show password"}
-          >
-            <Image
-              src={showLoginPassword ? "/img/eye-open.svg" : "/img/eye-closed.svg"}
-              alt=""
-              width={30}
-              height={30}
-              className="opacity-80 hover:opacity-100 transition-opacity pointer-events-none"
-            />
-          </button>
+          <Eye
+            isClosed={showLoginPassword}
+            onClickAction={() => setShowLoginPassword((v) => !v)}
+            width={30}
+            height={30}
+          />
         </div>
       </div>
 

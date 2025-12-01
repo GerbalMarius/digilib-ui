@@ -3,13 +3,10 @@
 import { useState } from "react";
 import Image from "next/image";
 import Spinner from "../ui/Spinner";
+import Eye from "../ui/Eye";
+import { RegisterFormProps } from "./form-props";
 
-interface RegisterFormProps {
-  isActive: boolean;
-  isSubmitting: boolean;
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  errors: string[];
-}
+
 
 const RegisterForm = ({
   isActive,
@@ -22,11 +19,10 @@ const RegisterForm = ({
   return (
     <form
       onSubmit={onSubmit}
-      className={`space-y-4 transition-all duration-300 ${
-        isActive
+      className={`space-y-4 transition-all duration-300 ${isActive
           ? "opacity-100 translate-y-0 pointer-events-auto"
           : "opacity-0 translate-y-4 pointer-events-none absolute inset-0"
-      }`}
+        }`}
     >
       {/* Error box */}
       {errors && errors.length > 0 && (
@@ -98,20 +94,12 @@ const RegisterForm = ({
             border-amber-200 px-4 py-3 text-base 
             bg-white/80 pr-12 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
           />
-          <button
-            type="button"
-            onClick={() => setShowRegPassword((v) => !v)}
-            className="absolute inset-y-0 right-0 px-4 flex items-center justify-center"
-            aria-label={showRegPassword ? "Hide password" : "Show password"}
-          >
-            <Image
-              src={showRegPassword ? "/img/eye-open.svg" : "/img/eye-closed.svg"}
-              alt=""
-              width={24}
-              height={24}
-              className="opacity-80 hover:opacity-100 transition-opacity pointer-events-none"
-            />
-          </button>
+          <Eye
+            isClosed={showRegPassword}
+            onClickAction={() => setShowRegPassword((v) => !v)}
+            width={24}
+            height={24}
+          />
         </div>
       </div>
 
@@ -130,22 +118,12 @@ const RegisterForm = ({
             bg-white/80 pr-12 focus:outline-none 
             focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
           />
-          <button
-            type="button"
-            onClick={() => setShowRegPassword((v) => !v)}
-            className="absolute inset-y-0 right-0 px-4 flex items-center justify-center"
-            aria-label={
-              showRegPassword ? "Hide repeat password" : "Show repeat password"
-            }
-          >
-            <Image
-              src={showRegPassword ? "/img/eye-open.svg" : "/img/eye-closed.svg"}
-              alt=""
-              width={24}
-              height={24}
-              className="opacity-80 hover:opacity-100 transition-opacity pointer-events-none"
-            />
-          </button>
+           <Eye
+            isClosed={showRegPassword}
+            onClickAction={() => setShowRegPassword((v) => !v)}
+            width={24}
+            height={24}
+          />
         </div>
       </div>
 
@@ -164,7 +142,7 @@ const RegisterForm = ({
 
         {/* Centered spinner overlay */}
         {isSubmitting && (
-          <Spinner inline/>
+          <Spinner inline />
         )}
       </button>
     </form>
