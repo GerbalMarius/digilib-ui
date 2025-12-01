@@ -1,4 +1,3 @@
-// app/admin/login/AdminLoginForm.tsx (or wherever you keep it)
 "use client";
 
 import { useState } from "react";
@@ -15,17 +14,16 @@ interface AdminLoginFormProps {
 const AdminLoginForm = ({ isSubmitting, onSubmit, errors }: AdminLoginFormProps) => {
   const [showPassword, setShowPassword] = useState(false);
 
-  const inputClasses =
-    "w-full rounded-xl border border-amber-300/70 bg-amber-950/5 px-4 py-3 text-sm " +
-    "text-slate-900 placeholder:text-slate-400 " +
-    "focus:outline-none focus:ring-2 focus:ring-amber-600 focus:border-amber-600";
-
   return (
-    <form onSubmit={onSubmit} className="space-y-6">
-      {/* Error box */}
+    <form
+      onSubmit={onSubmit}
+      className="space-y-5 md:space-y-6 w-full"
+    >
       {errors && errors.length > 0 && (
-        <div className="mb-2 rounded-xl border border-red-300/80 bg-red-50/90 px-4 py-3 text-sm text-red-800 shadow-sm">
-          <p className="font-semibold mb-1">Unable to sign you in:</p>
+        <div className="mb-2 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+          <p className="font-semibold mb-1">
+            There was a problem with your login:
+          </p>
           <ul className="list-disc list-inside space-y-0.5">
             {errors.map((err, idx) => (
               <li key={idx}>{err}</li>
@@ -35,7 +33,7 @@ const AdminLoginForm = ({ isSubmitting, onSubmit, errors }: AdminLoginFormProps)
       )}
 
       <div>
-        <label className="block text-xs font-semibold tracking-wide text-slate-700 mb-1 uppercase">
+        <label className="block text-md md:text-lg font-medium text-slate-800 mb-1">
           Email
         </label>
         <input
@@ -43,37 +41,38 @@ const AdminLoginForm = ({ isSubmitting, onSubmit, errors }: AdminLoginFormProps)
           name="email"
           placeholder="admin@example.com"
           required
-          className={inputClasses}
+          className="font-medium w-full rounded-xl border border-amber-300 px-4 py-3.5 text-base md:text-lg 
+          bg-white/90 focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-amber-700"
         />
       </div>
 
       <div>
-        <label className="block text-xs font-semibold tracking-wide text-slate-700 mb-1 uppercase">
+        <label className="block text-md md:text-lg font-medium text-slate-800 mb-1">
           Password
         </label>
         <div className="relative">
           <input
             type={showPassword ? "text" : "password"}
             name="password"
-            placeholder="Enter your password"
+            placeholder="Enter your password..."
             required
-            className={`${inputClasses} pr-11`}
+            className="w-full font-medium rounded-xl border border-amber-300 px-4 py-3.5 text-base md:text-lg 
+            bg-white/90 pr-12 focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-amber-700"
           />
           <Eye
-            isClosed={!showPassword}
+            isClosed={showPassword}
             onClickAction={() => setShowPassword((v) => !v)}
-            width={22}
-            height={22}
+            width={28}
+            height={28}
           />
         </div>
       </div>
 
-      {/* 🔗 Registration link above button */}
-      <p className="text-xs text-slate-500">
+      <p className="text-xs md:text-sm text-slate-500">
         Don&apos;t have an admin account yet?{" "}
         <Link
-          href="/admin/register"
-          className="font-semibold text-amber-800 hover:text-amber-700"
+          href="/auth/admin/register"
+          className="font-semibold text-amber-700 hover:text-amber-800"
         >
           Create one here
         </Link>
@@ -83,10 +82,13 @@ const AdminLoginForm = ({ isSubmitting, onSubmit, errors }: AdminLoginFormProps)
       <button
         type="submit"
         disabled={isSubmitting}
-        className="relative mt-1 w-full rounded-xl bg-amber-900 text-amber-50 text-sm font-semibold py-3
-        shadow-md shadow-amber-900/30 transition-colors
-        hover:bg-amber-800
-        disabled:opacity-70 disabled:cursor-not-allowed"
+        className={`hover:${
+          isSubmitting ? "cursor-not-allowed" : "cursor-pointer"
+        } 
+        relative mt-2 w-full rounded-xl bg-amber-800 text-white font-semibold
+        py-3.5 text-base md:text-lg shadow-md transition-colors
+        hover:bg-amber-700
+        disabled:opacity-75 disabled:cursor-not-allowed`}
       >
         <span className={isSubmitting ? "opacity-0" : "opacity-100"}>
           Sign in as admin

@@ -9,7 +9,7 @@ const Spinner = ({ inline = false }: SpinnerProps) => {
             <span className="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
         </span>
     ) : (
-        <div className="min-h-screen flex items-center justify-center bg-amber-50">
+        <div className="min-h-screen flex items-center justify-center">
             <div className="h-10 w-10 border-4 border-amber-600 border-t-transparent rounded-full animate-spin" />
         </div>
     );

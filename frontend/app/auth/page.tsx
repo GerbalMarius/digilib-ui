@@ -8,6 +8,7 @@ import { getErrorMessagesFromError } from "../lib/http-error";
 import { useRouter } from "next/navigation";
 import Spinner from "../ui/Spinner";
 import { LoginFormValues, parseFormData, RegisterFormValues } from "../lib/form-utils";
+import Link from "next/link";
 
 const AuthPage = () => {
     const [activeTab, setActiveTab] = useState<"login" | "register">("login");
@@ -41,9 +42,9 @@ const AuthPage = () => {
         setLoginErrors([]);
 
         const formData = new FormData(e.currentTarget);
-        const {email, password} = parseFormData<LoginFormValues>(formData, {
-            email : {key : "email"},
-            password : {key : "password"}
+        const { email, password } = parseFormData<LoginFormValues>(formData, {
+            email: { key: "email" },
+            password: { key: "password" }
         })
 
         try {
@@ -173,6 +174,17 @@ const AuthPage = () => {
                             onSubmit={handleRegisterSubmit}
                             errors={registerErrors}
                         />
+                    </div>
+
+                    <div className="mt-6 text-center text-xs md:text-sm text-slate-500">
+                        Are you an administrator?{" "}
+                        <Link
+                            href="/auth/admin/login"
+                            className="font-semibold text-amber-700 hover:text-amber-800"
+                        >
+                            Sign in as admin
+                        </Link>
+                        .
                     </div>
                 </main>
             </div>

@@ -10,15 +10,28 @@ interface AdminRegisterFormProps {
   errors: string[];
 }
 
-const AdminRegisterForm = ({ isSubmitting, onSubmit, errors }: AdminRegisterFormProps) => {
+const AdminRegisterForm = ({
+  isSubmitting,
+  onSubmit,
+  errors,
+}: AdminRegisterFormProps) => {
   const [showPassword, setShowPassword] = useState(false);
 
+  const inputClasses =
+    "w-full rounded-xl border border-amber-300 px-4 py-3.5 text-base md:text-lg " +
+    "bg-white/90 font-medium text-slate-900 placeholder:text-slate-400 " +
+    "focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-amber-700";
+
   return (
-    <form onSubmit={onSubmit} className="space-y-5">
-      {/* Error box */}
+    <form
+      onSubmit={onSubmit}
+      className="space-y-5 md:space-y-6 w-full"
+    >
       {errors && errors.length > 0 && (
-        <div className="mb-2 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
-          <p className="font-semibold mb-1">Unable to create admin account:</p>
+        <div className="mb-2 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+          <p className="font-semibold mb-1">
+            There was a problem with your registration:
+          </p>
           <ul className="list-disc list-inside space-y-0.5">
             {errors.map((err, idx) => (
               <li key={idx}>{err}</li>
@@ -27,9 +40,9 @@ const AdminRegisterForm = ({ isSubmitting, onSubmit, errors }: AdminRegisterForm
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
         <div>
-          <label className="block text-sm font-medium text-slate-800 mb-1">
+          <label className="block text-md md:text-lg font-medium text-slate-800 mb-1">
             First name
           </label>
           <input
@@ -37,11 +50,11 @@ const AdminRegisterForm = ({ isSubmitting, onSubmit, errors }: AdminRegisterForm
             name="firstName"
             placeholder="First name"
             required
-            className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-slate-900"
+            className={inputClasses}
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-slate-800 mb-1">
+          <label className="block text-md md:text-lg font-medium text-slate-800 mb-1">
             Last name
           </label>
           <input
@@ -49,13 +62,13 @@ const AdminRegisterForm = ({ isSubmitting, onSubmit, errors }: AdminRegisterForm
             name="lastName"
             placeholder="Last name"
             required
-            className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-slate-900"
+            className={inputClasses}
           />
         </div>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-800 mb-1">
+        <label className="block text-md md:text-lg font-medium text-slate-800 mb-1">
           Email
         </label>
         <input
@@ -63,33 +76,33 @@ const AdminRegisterForm = ({ isSubmitting, onSubmit, errors }: AdminRegisterForm
           name="email"
           placeholder="admin@example.com"
           required
-          className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-slate-900"
+          className={inputClasses}
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-800 mb-1">
+        <label className="block text-md md:text-lg font-medium text-slate-800 mb-1">
           Password
         </label>
         <div className="relative">
           <input
             type={showPassword ? "text" : "password"}
             name="password"
-            placeholder="At least 10 characters, incl. digits, upper case and special characters"
+            placeholder="At least 10 characters, incl. digits, upper case & special characters"
             required
-            className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm bg-white pr-11 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-slate-900"
+            className={`${inputClasses} pr-12`}
           />
           <Eye
-            isClosed={!showPassword}
-            onClickAction={() => setShowPassword(v => !v)}
-            width={22}
-            height={22}
+            isClosed={showPassword}
+            onClickAction={() => setShowPassword((v) => !v)}
+            width={28}
+            height={28}
           />
         </div>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-800 mb-1">
+        <label className="block text-md md:text-lg font-medium text-slate-800 mb-1">
           Confirm password
         </label>
         <div className="relative">
@@ -98,19 +111,19 @@ const AdminRegisterForm = ({ isSubmitting, onSubmit, errors }: AdminRegisterForm
             name="passwordConfirmation"
             placeholder="Repeat your password"
             required
-            className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm bg-white pr-11 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-slate-900"
+            className={`${inputClasses} pr-12`}
           />
           <Eye
-            isClosed={!showPassword}
-            onClickAction={() => setShowPassword(v => !v)}
-            width={22}
-            height={22}
+            isClosed={showPassword}
+            onClickAction={() => setShowPassword((v) => !v)}
+            width={28}
+            height={28}
           />
         </div>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-800 mb-1">
+        <label className="block text-md md:text-lg font-medium text-slate-800 mb-1">
           Admin code
         </label>
         <input
@@ -118,9 +131,9 @@ const AdminRegisterForm = ({ isSubmitting, onSubmit, errors }: AdminRegisterForm
           name="adminCode"
           placeholder="Enter admin invitation / authorization code"
           required
-          className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-slate-900"
+          className={inputClasses}
         />
-        <p className="mt-1 text-xs text-slate-500">
+        <p className="mt-1 text-xs md:text-sm text-slate-500">
           This code is required to register an administrative account.
         </p>
       </div>
@@ -128,9 +141,14 @@ const AdminRegisterForm = ({ isSubmitting, onSubmit, errors }: AdminRegisterForm
       <button
         type="submit"
         disabled={isSubmitting}
-        className={`relative mt-2 w-full rounded-lg bg-slate-900 text-white text-sm font-semibold py-2.5
-        shadow-sm transition-colors hover:bg-slate-800
-        disabled:opacity-70 disabled:cursor-not-allowed`}
+        className={`hover:${
+          isSubmitting ? "cursor-not-allowed" : "cursor-pointer"
+        } 
+        relative mt-3 w-full rounded-xl 
+        bg-amber-800 text-white font-semibold py-3.5 
+        text-base md:text-lg shadow-md transition-colors
+        hover:bg-amber-700
+        disabled:opacity-75 disabled:cursor-not-allowed`}
       >
         <span className={isSubmitting ? "opacity-0" : "opacity-100"}>
           Create admin account

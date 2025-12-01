@@ -1,4 +1,3 @@
-// app/admin/login/page.tsx (or wherever you keep pages)
 "use client";
 
 import { useEffect, useState } from "react";
@@ -24,7 +23,7 @@ const AdminLoginPage = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
         <Spinner />
       </div>
     );
@@ -58,12 +57,12 @@ const AdminLoginPage = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
-      <div className="w-full max-w-md rounded-xl bg-white border border-slate-200 shadow-sm px-8 py-8">
-        <h1 className="text-xl font-semibold text-slate-900 mb-1">
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4 md:px-8">
+      <div className="w-full max-w-3xl rounded-3xl bg-white/90 border border-amber-100 shadow-xl px-6 md:px-10 py-8 md:py-10">
+        <h1 className="text-xl md:text-2xl font-semibold text-slate-900 mb-1">
           Admin sign in
         </h1>
-        <p className="text-sm text-slate-500 mb-6">
+        <p className="text-sm md:text-base text-slate-500 mb-6">
           Use your administrative credentials to access the console.
         </p>
 
