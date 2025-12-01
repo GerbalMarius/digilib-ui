@@ -5,19 +5,8 @@ import Spinner from "../ui/Spinner";
 import { axiosClient } from "../lib/axios-client";
 import type { PageResponse } from "../lib/page-utils";
 import BookCard from "./BookCard";
+import { BookData, SortOption } from "./utils";
 
-export interface BookData {
-    isbn: string;
-    title: string;
-    summary: string;
-    imageUrl: string;
-    pageCount: number | null;
-    publicationDate: string | null;
-    language: string;
-    edition: string;
-}
-
-type SortOption = "title" | "isbn" | "publicationDate";
 
 const sortOptionToParam: Record<SortOption, string[]> = {
     title: ["title"],
@@ -57,7 +46,6 @@ const BooksPage = () => {
                 setTotalElements(res.data.page.totalElements);
             } catch (err) {
                 if (cancelled) return;
-                console.error(err);
                 setError("Unable to load books. Please try again later.");
             } finally {
                 if (!cancelled) setLoading(false);
@@ -203,7 +191,7 @@ const BooksPage = () => {
                                                     key={p}
                                                     onClick={() => setPage(p)}
                                                     className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold transition 
-              ${p === page
+                                                            ${p === page
                                                             ? "bg-amber-700 text-white shadow-md scale-105"
                                                             : "bg-white text-slate-700 border border-amber-200 hover:bg-amber-100"
                                                         }`}
@@ -220,8 +208,8 @@ const BooksPage = () => {
                                         disabled={page >= totalPages}
                                         onClick={() => setPage((p) => p + 1)}
                                         className="rounded-full px-4 py-2 text-sm font-medium bg-white border border-amber-300 
-      text-amber-800 hover:bg-amber-100 disabled:opacity-40 disabled:cursor-not-allowed 
-      transition shadow-sm"
+                                                 text-amber-800 hover:bg-amber-100 disabled:opacity-40 disabled:cursor-not-allowed 
+                                                  transition shadow-sm"
                                     >
                                         Next
                                     </button>
