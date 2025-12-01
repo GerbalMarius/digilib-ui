@@ -51,7 +51,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     async function register(data: RegisterData) {
-        const res = await axiosAuth.post("/auth/register", data);
+
+        const registerEndPoint = data.adminCode ? 
+                                    "/auth/signUp/admin" : "/auth/signUp/user"
+
+        const res = await axiosAuth.post(registerEndPoint, data);
         const { accessToken } = res.data;
 
         setTokens(accessToken, "null");
