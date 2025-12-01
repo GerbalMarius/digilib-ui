@@ -7,6 +7,7 @@ import { useAuth } from "../lib/auth-context";
 import { getErrorMessagesFromError } from "../lib/http-error";
 import { useRouter } from "next/navigation";
 import Spinner from "../ui/Spinner";
+import { LoginFormValues, parseFormData, RegisterFormValues } from "../lib/form-utils";
 
 const AuthPage = () => {
     const [activeTab, setActiveTab] = useState<"login" | "register">("login");
@@ -40,8 +41,10 @@ const AuthPage = () => {
         setLoginErrors([]);
 
         const formData = new FormData(e.currentTarget);
-        const email = formData.get("email") as string;
-        const password = formData.get("password") as string;
+        const {email, password} = parseFormData<LoginFormValues>(formData, {
+            email : {key : "email"},
+            password : {key : "password"}
+        })
 
         try {
             await login(email, password);
@@ -63,13 +66,23 @@ const AuthPage = () => {
         setRegisterErrors([]);
 
         const formData = new FormData(e.currentTarget);
-        const firstName = (formData.get("name") as string)
-        const lastName = (formData.get("lastName") as string) // if needed
-        const email = formData.get("registerEmail") as string;
-        const password = formData.get("registerPassword") as string;
-        const passwordConfirmation = formData.get("registerPasswordRepeat") as string;
 
-        const adminCode = formData.get("adminCode") as string || undefined;
+        const {
+            firstName,
+            lastName,
+            email,
+            password,
+            passwordConfirmation,
+            adminCode,
+        } = parseFormData<RegisterFormValues>(formData, {
+            firstName: { key: "name" },
+            lastName: { key: "lastName" },
+            email: { key: "registerEmail" },
+            password: { key: "registerPassword" },
+            passwordConfirmation: { key: "registerPasswordRepeat" },
+            adminCode: { key: "adminCode", optional: true },
+        });
+
 
         if (password !== passwordConfirmation) {
             setRegisterErrors(["Passwords do not match."]);
