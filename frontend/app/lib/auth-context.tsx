@@ -23,8 +23,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             try {
                 const access = getAccessToken();
                 if (access) {
-                    const res = await axiosClient.get("/users/me");
-                    setUser(res.data as User);
+                    const res = await axiosClient.get<User>("/users/me");
+                    setUser(res.data);
                 }
             } catch (err) {
                 clearTokens();
@@ -46,8 +46,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setTokens(accessToken, "null");
 
         
-        const me = await axiosClient.get("/users/me");
-        setUser(me.data as User);
+        const me = await axiosClient.get<User>("/users/me");
+        setUser(me.data);
     }
 
     async function register(data: RegisterData) {
@@ -56,8 +56,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
         setTokens(accessToken, "null");
 
-        const me = await axiosClient.get("/users/me");
-        setUser(me.data as User);
+        const me = await axiosClient.get<User>("/users/me");
+        setUser(me.data);
     }
 
 
