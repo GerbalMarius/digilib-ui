@@ -181,8 +181,8 @@
   }
 }
 
+
 body {
-  body {
   background: var(--bg);
   background-size: 200% 200%;
   color: var(--fg);
@@ -191,5 +191,4 @@ body {
   line-height: 1.6;
   
   animation: bg-breathe 18s ease-in-out infinite;
-}
 }
