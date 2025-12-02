@@ -7,6 +7,7 @@ import { axiosClient } from "../lib/axios-client";
 import Spinner from "../ui/Spinner";
 import { getErrorMessagesFromError } from "../lib/http-error";
 import { useToast } from "../lib/toast-context";
+import DashBoardSidebar from "../ui/DashBoardSidebar";
 
 interface UpdateFormState {
     email: string;
@@ -99,26 +100,22 @@ const UserPage = () => {
         try {
             const payload: any = {};
 
-            // email – only if changed
             if (form.email && form.email !== user.email) {
                 payload.email = form.email;
             }
 
-            // firstName – only if non-empty AND changed
             const currentFirst = user.firstName ?? "";
             const newFirst = form.firstName.trim();
             if (newFirst && newFirst !== currentFirst) {
                 payload.firstName = newFirst;
             }
 
-            // lastName – only if non-empty AND changed
             const currentLast = user.lastName ?? "";
             const newLast = form.lastName.trim();
             if (newLast && newLast !== currentLast) {
                 payload.lastName = newLast;
             }
 
-            // password – only if entered
             if (form.password) {
                 payload.password = form.password;
                 payload.passwordConfirmation = form.passwordConfirmation;
@@ -156,45 +153,33 @@ const UserPage = () => {
     return (
         <div className="min-h-screen bg-amber-50 flex">
             {/* LEFT SIDEBAR / MENU */}
-            <aside className="hidden md:flex md:w-64 lg:w-72 bg-linear-to-b from-amber-200 via-amber-300 to-amber-400 text-slate-900 flex-col py-6 px-4 shadow-xl">
-                <div className="flex items-center gap-3 px-2 mb-8">
-                    <div className="h-10 w-10 rounded-2xl bg-white/90 flex items-center justify-center shadow-md">
-                        <span className="font-bold text-amber-700 text-xl">D</span>
-                    </div>
-                    <div>
-                        <p className="text-sm font-semibold tracking-wide uppercase text-amber-900/90">
-                            Digilib
-                        </p>
-                        <p className="text-xs text-amber-900/80">Account settings</p>
-                    </div>
-                </div>
-
-                <nav className="space-y-2 flex-1">
-                    <MenuButton
-                        active={activeSection === "profile"}
-                        label="Profile details"
-                        icon="👤"
-                        onClick={() => setActiveSection("profile")}
-                    />
-                    <MenuButton
-                        active={activeSection === "password"}
-                        label="Password"
-                        icon="🔒"
-                        onClick={() => setActiveSection("password")}
-                    />
-                </nav>
-
-                <button
-                    onClick={async () => {
-                        await logout();
-                        showToast("You’ve been logged out.", "info");
-                        router.push("/");
-                    }}
-                    className="mt-6 inline-flex items-center justify-center gap-2 rounded-xl bg-amber-800 text-white text-sm font-semibold px-4 py-2 shadow-md hover:bg-amber-700 transition"
-                >
-                    <span>Log out</span>
-                </button>
-            </aside>
+            <DashBoardSidebar
+                variant="user"
+                title="Digilib"
+                subtitle="Account settings"
+                avatarText="D"
+                links={[
+                    {
+                        id: "profile",
+                        label: "Profile details",
+                        iconSrc: "/img/account-white.svg",
+                        active: activeSection === "profile",
+                        onClick: () => setActiveSection("profile"),
+                    },
+                    {
+                        id: "password",
+                        label: "Password",
+                        iconSrc: "/img/lock-white.svg",
+                        active: activeSection === "password",
+                        onClick: () => setActiveSection("password"),
+                    },
+                ]}
+                onLogout={async () => {
+                    await logout();
+                    showToast("You’ve been logged out.", "info");
+                    router.push("/");
+                }}
+            />
 
             {/* MAIN CONTENT */}
             <main className="flex-1 flex flex-col">
@@ -430,18 +415,5 @@ type MenuButtonProps = {
     onClick: () => void;
 };
 
-const MenuButton = ({ active, label, icon, onClick }: MenuButtonProps) => (
-    <button
-        type="button"
-        onClick={onClick}
-        className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition ${active
-            ? "bg-white/95 text-amber-800 shadow-sm"
-            : "text-amber-50/90 hover:bg-amber-100/60 hover:text-amber-900"
-            }`}
-    >
-        <span className="text-lg">{icon}</span>
-        <span>{label}</span>
-    </button>
-);
 
 export default UserPage;

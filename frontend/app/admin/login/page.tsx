@@ -19,8 +19,8 @@ const AdminLoginPage = () => {
     if (!isLoading && isAuthenticated && user?.roles?.some(r => r.includes("ADMIN"))) {
       router.replace("/admin");
     }
-    else{
-      router.replace("/");
+    else if (!isAuthenticated){
+      router.replace("/admin/login");
     }
   }, [isAuthenticated, isLoading, router]);
 

@@ -4,11 +4,12 @@ import Link from "next/link";
 export default function HomePage() {
   return (
     <>
-      <NavBar
+       <NavBar
         links={[
-          { label: "About", href: "#about" },
-          { label: "How it works", href: "#how-it-works" },
-          { label: "Features", href: "#features" },
+          { label: "Browse books", href: "/books" },
+          { label: "About", href: "/#about" },
+          { label: "How it works", href: "/#how-it-works" },
+          { label: "Features", href: "/#features" },
           { label: "Log in", href: "/auth" },
         ]}
         showButton={true}

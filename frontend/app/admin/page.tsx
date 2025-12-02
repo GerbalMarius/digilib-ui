@@ -7,8 +7,9 @@ import { useAuth } from "../lib/auth-context";
 import Spinner from "../ui/Spinner";
 import { getErrorMessagesFromError } from "../lib/http-error";
 import { useToast } from "../lib/toast-context";
-import { PageResponse, PageInfo } from "../lib/page-utils"; // <-- your path
+import { PageResponse, PageInfo } from "../lib/page-utils";
 import type { User } from "../lib/auth-types";
+import DashBoardSidebar from "../ui/DashBoardSidebar";
 
 interface UpdateFormState {
   email: string;
@@ -90,11 +91,10 @@ const AdminDashboardPage = () => {
     }
   }, [user]);
 
-  // Fetch users when Users tab is active or page changes
   useEffect(() => {
     if (activeSection !== "users" || !isAdmin) return;
     void fetchUsers(currentPage);
-  }, [activeSection, currentPage, isAdmin, usersPage]);
+  }, [activeSection, currentPage, isAdmin]);
 
   const fetchUsers = async (pageIndex: number) => {
     setUsersLoading(true);
@@ -243,7 +243,7 @@ const AdminDashboardPage = () => {
         showToast("User has been enabled.", "success");
       }
 
-      
+
 
       // Re-fetch current page
       await fetchUsers(currentPage);
@@ -267,47 +267,33 @@ const AdminDashboardPage = () => {
   return (
     <div className="min-h-screen bg-slate-50 flex">
       {/* SIDEBAR */}
-      <aside className="hidden md:flex md:w-64 lg:w-72 bg-slate-900 text-slate-50 flex-col py-6 px-4 shadow-xl">
-        <div className="flex items-center gap-3 px-2 mb-8">
-          <div className="h-10 w-10 rounded-2xl bg-amber-500 flex items-center justify-center shadow-md">
-            <span className="font-bold text-slate-900 text-xl">AD</span>
-          </div>
-          <div>
-            <p className="text-sm font-semibold tracking-wide uppercase text-slate-100/90">
-              Digilib Admin
-            </p>
-            <p className="text-xs text-slate-400">
-              {user.firstName || user.email}
-            </p>
-          </div>
-        </div>
-
-        <nav className="space-y-2 flex-1">
-          <MenuButton
-            active={activeSection === "account"}
-            label="Account"
-            icon="👤"
-            onClick={() => setActiveSection("account")}
-          />
-          <MenuButton
-            active={activeSection === "users"}
-            label="Users"
-            icon="👥"
-            onClick={() => setActiveSection("users")}
-          />
-        </nav>
-
-        <button
-          onClick={async () => {
-            await logout();
-            showToast("You’ve been logged out.", "info");
-            router.push("/");
-          }}
-          className="mt-6 inline-flex items-center justify-center gap-2 rounded-xl bg-slate-800 text-slate-50 text-sm font-semibold px-4 py-2 shadow-md hover:bg-slate-700 transition"
-        >
-          <span>Log out</span>
-        </button>
-      </aside>
+      <DashBoardSidebar
+        variant="admin"
+        title="Digilib Admin"
+        subtitle={user.firstName || user.email}
+        avatarText="AD"
+        links={[
+          {
+            id: "account",
+            label: "Account",
+            iconSrc: "/img/account-white.svg",
+            active: activeSection === "account",
+            onClick: () => setActiveSection("account"),
+          },
+          {
+            id: "users",
+            label: "Users",
+            iconSrc: "/img/users-white.svg",
+            active: activeSection === "users",
+            onClick: () => setActiveSection("users"),
+          },
+        ]}
+        onLogout={async () => {
+          await logout();
+          showToast("You’ve been logged out.", "info");
+          router.push("/");
+        }}
+      />
 
       {/* MAIN CONTENT */}
       <main className="flex-1 flex flex-col">
@@ -331,7 +317,7 @@ const AdminDashboardPage = () => {
         </header>
 
         <section className="flex-1 px-4 sm:px-8 py-6 sm:py-8">
-          <div className="max-w-5xl mx-auto space-y-6">
+          <div className="max-w-6xl mx-auto space-y-6">
             {/* ACCOUNT SECTION */}
             {activeSection === "account" && (
               <>
@@ -475,7 +461,7 @@ const AdminDashboardPage = () => {
 
                 {usersLoading && (
                   <div className="py-10 flex justify-center">
-                    <Spinner/>
+                    <Spinner />
                   </div>
                 )}
 
@@ -488,55 +474,51 @@ const AdminDashboardPage = () => {
                 {!usersLoading && usersPage && (
                   <>
                     <div className="overflow-x-auto">
-                      <table className="min-w-full text-sm border-t border-b border-slate-100">
+                      <table className="min-w-full text-sm md:text-base border-t border-b border-slate-100">
                         <thead>
                           <tr className="bg-slate-50 text-slate-700">
-                            <th className="text-left px-3 py-2">Name</th>
-                            <th className="text-left px-3 py-2">Email</th>
-                            <th className="text-left px-3 py-2">Roles</th>
-                            <th className="text-left px-3 py-2">Actions</th>
+                            <th className="text-left px-4 py-3">Name</th>
+                            <th className="text-left px-4 py-3">Email</th>
+                            <th className="text-left px-4 py-3">Roles</th>
+                            <th className="text-left px-4 py-3">Actions</th>
                           </tr>
                         </thead>
                         <tbody>
                           {usersPage.content.map((u) => {
                             const fullName =
-                              (u.firstName || u.lastName) ?
-                                `${u.firstName ?? ""} ${u.lastName ?? ""}`.trim() :
-                                "—";
-                            
+                              (u.firstName || u.lastName)
+                                ? `${u.firstName ?? ""} ${u.lastName ?? ""}`.trim()
+                                : "—";
+
                             return (
                               <tr
                                 key={u.id}
                                 className="border-t border-slate-100 hover:bg-slate-50/80"
                               >
-                                <td className="px-3 py-2 text-slate-900">
+                                <td className="px-4 py-3 text-slate-900">
                                   {fullName}
                                 </td>
-                                <td className="px-3 py-2 text-slate-700">
+                                <td className="px-4 py-3 text-slate-700">
                                   {u.email}
                                 </td>
-                                <td className="px-3 py-2 text-slate-700">
+                                <td className="px-4 py-3 text-slate-700">
                                   {u.roles.join(", ")}
                                 </td>
-                                <td className="px-3 py-2">
+                                <td className="px-4 py-3">
                                   <div className="flex gap-2">
                                     {u.isDisabled ? (
                                       <button
                                         type="button"
-                                        onClick={() =>
-                                          openUserAction("enable", u)
-                                        }
-                                        className="rounded-full border border-emerald-500 text-emerald-700 text-xs font-semibold px-3 py-1 hover:bg-emerald-50 transition"
+                                        onClick={() => openUserAction("enable", u)}
+                                        className="rounded-full border border-emerald-500 text-emerald-700 text-xs md:text-sm font-semibold px-3 py-1.5 hover:bg-emerald-50 transition"
                                       >
                                         Enable
                                       </button>
                                     ) : (
                                       <button
                                         type="button"
-                                        onClick={() =>
-                                          openUserAction("disable", u)
-                                        }
-                                        className="rounded-full border border-red-500 text-red-700 text-xs font-semibold px-3 py-1 hover:bg-red-50 transition"
+                                        onClick={() => openUserAction("disable", u)}
+                                        className="rounded-full border border-red-500 text-red-700 text-xs md:text-sm font-semibold px-3 py-1.5 hover:bg-red-50 transition"
                                       >
                                         Disable
                                       </button>
@@ -635,10 +617,10 @@ const AdminDashboardPage = () => {
                   form.lastName.trim() !== (user.lastName ?? "").trim()) ||
                 form.password
               ) && (
-                <li className="text-slate-500">
-                  You haven&apos;t changed any fields yet.
-                </li>
-              )}
+                  <li className="text-slate-500">
+                    You haven&apos;t changed any fields yet.
+                  </li>
+                )}
             </ul>
 
             <div className="flex justify-end gap-3 mt-2">
@@ -696,17 +678,16 @@ const AdminDashboardPage = () => {
                 type="button"
                 onClick={handleConfirmUserAction}
                 disabled={userActionSubmitting}
-                className={`rounded-full px-5 py-1.5 text-sm font-semibold text-white shadow-md disabled:opacity-70 disabled:cursor-not-allowed transition ${
-                  userAction.mode === "disable"
-                    ? "bg-red-600 hover:bg-red-500"
-                    : "bg-emerald-600 hover:bg-emerald-500"
-                }`}
+                className={`rounded-full px-5 py-1.5 text-sm font-semibold text-white shadow-md disabled:opacity-70 disabled:cursor-not-allowed transition ${userAction.mode === "disable"
+                  ? "bg-red-600 hover:bg-red-500"
+                  : "bg-emerald-600 hover:bg-emerald-500"
+                  }`}
               >
                 {userActionSubmitting
                   ? "Applying..."
                   : userAction.mode === "disable"
-                  ? "Disable user"
-                  : "Enable user"}
+                    ? "Disable user"
+                    : "Enable user"}
               </button>
             </div>
           </div>
@@ -716,26 +697,6 @@ const AdminDashboardPage = () => {
   );
 };
 
-type MenuButtonProps = {
-  active: boolean;
-  label: string;
-  icon: string;
-  onClick: () => void;
-};
 
-const MenuButton = ({ active, label, icon, onClick }: MenuButtonProps) => (
-  <button
-    type="button"
-    onClick={onClick}
-    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition ${
-      active
-        ? "bg-slate-800 text-slate-50 shadow-sm"
-        : "text-slate-200 hover:bg-slate-800/70 hover:text-white"
-    }`}
-  >
-    <span className="text-lg">{icon}</span>
-    <span>{label}</span>
-  </button>
-);
 
 export default AdminDashboardPage;

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { MenuState, NavBarProps } from "./navbar-utils";
 import { useAuth } from "../lib/auth-context";
 import { useToast } from "../lib/toast-context";
+import { usePathname } from "next/navigation";
 
 const NavBar = ({ links,
   orientation = "horizontal",
@@ -20,6 +21,9 @@ const NavBar = ({ links,
 
   const btnRef = useRef<HTMLButtonElement | null>(null);
   const menuRef = useRef<HTMLElement | null>(null);
+
+  const pathName = usePathname();
+  const isBookStore = pathName === "/books";
 
   const isActive = menuState === "opening" || menuState === "open";
   const isVisible = menuState !== "closed";
@@ -43,7 +47,6 @@ const NavBar = ({ links,
     if (menuState === "closing") setMenuState("closed");
   };
 
-  // Close mobile nav on outside click
   useEffect(() => {
     if (menuState === "closed") return;
 
@@ -58,7 +61,6 @@ const NavBar = ({ links,
     return () => document.removeEventListener("click", handleClick);
   }, [menuState]);
 
-  // Close auth dropdown on outside click
   useEffect(() => {
     if (!authOpen) return;
 
@@ -74,9 +76,8 @@ const NavBar = ({ links,
   }, [authOpen]);
 
   const desktopNavClasses = isHorizontal
-    ? "hidden md:flex flex-row items-center gap-6 text-sm md:text-base font-semibold"
+    ? "hidden md:flex flex-row items-center justify-center gap-6 text-sm md:text-base font-semibold"
     : "hidden md:flex flex-col items-end gap-4 text-sm md:text-base font-semibold";
-
   return (
     <header className="sticky top-0 z-50 bg-linear-to-b from-amber-50/90 via-amber-50/60 to-transparent">
       <nav className="relative max-w-6xl mx-auto mt-4 mb-4 px-4 sm:px-6">
@@ -99,18 +100,32 @@ const NavBar = ({ links,
           <div className="hidden md:flex items-center gap-6">
             <div className={desktopNavClasses}>
               {links
-                .filter((link) => link.href !== "/auth")
-                .map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className="underline-hover text-slate-800 hover:text-amber-800 transition"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-            </div>
+                .filter((link) => {
+                  if (isBookStore) return link.href === "/";
+                  return link.href !== "/auth";
+                })
+                .map((link) => {
+                  const isBrowse = link.href === "/books";
 
+                  if (isBrowse && isBookStore) return null;
+
+                  return (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className={
+                        isBrowse
+                          ?
+                          "px-7 py-2.5 rounded-full bg-amber-700 text-white shadow-lg text-base md:text-lg font-semibold " +
+                          "hover:bg-amber-600 transition-all transform hover:-translate-y-0.5 hover:shadow-xl"
+                          : "underline-hover text-slate-800 hover:text-amber-800 transition"
+                      }
+                    >
+                      {link.label}
+                    </Link>
+                  );
+                })}
+            </div>
             {/* Auth dropdown (desktop) */}
             {showButton && (
               <div className="relative">
@@ -140,7 +155,6 @@ const NavBar = ({ links,
                   <div className="absolute right-0 mt-2 w-48 rounded-xl bg-amber-50/95 
   shadow-lg border border-amber-200/80 py-2 text-sm">
 
-                    {/* If NOT logged in → show Login */}
                     {!isAuthenticated && (
                       <Link
                         href={buttonHref}
@@ -151,7 +165,6 @@ const NavBar = ({ links,
                       </Link>
                     )}
 
-                    {/* If logged in → show email + user page + logout */}
                     {isAuthenticated && (
                       <>
                         <div className="px-4 pb-2 text-xs text-amber-700 opacity-80">

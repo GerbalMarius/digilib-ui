@@ -10,3 +10,5 @@ export interface PageResponse<T> {
     content : T[];
     page : PageInfo;
 }
+
+export type Variant = "admin" | "user";

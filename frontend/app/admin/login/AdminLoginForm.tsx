@@ -1,9 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Spinner from "../../ui/Spinner";
 import Eye from "../../ui/Eye";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/app/lib/toast-context";
+import { useAuth } from "@/app/lib/auth-context";
 
 interface AdminLoginFormProps {
   isSubmitting: boolean;
@@ -12,7 +15,34 @@ interface AdminLoginFormProps {
 }
 
 const AdminLoginForm = ({ isSubmitting, onSubmit, errors }: AdminLoginFormProps) => {
+  const router = useRouter();
+    const { login, logout, isAuthenticated, isLoading, user } = useAuth();
+  const { showToast } = useToast();
+
   const [showPassword, setShowPassword] = useState(false);
+
+    useEffect(() => {
+    if (isLoading) return;
+
+    if (!isAuthenticated) {
+      return;
+    }
+
+    const isAdmin = user?.roles?.some((r) => r.includes("ADMIN"));
+
+    if (isAdmin) {
+      router.replace("/admin");
+    } else {
+      (async () => {
+        await logout();
+        showToast(
+          "You are not authorized to access the admin console.",
+          "error" // <- red toast
+        );
+      })();
+    }
+  }, [isAuthenticated, isLoading, user, logout, router, showToast]);
+
 
   return (
     <form

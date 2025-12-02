@@ -21,3 +21,19 @@ export interface LibraryBookData {
   libraryName: string;
   libraryAddress: string;
 }
+
+export type Scope = "all" | "genre" | "genreAuthor";
+
+export interface GenreData {
+  id: number;
+  title: string;
+};
+
+export interface AuthorData {
+  id: number;
+  firstName: string;
+  lastName: string;
+  birthDate?: string | null;
+  deathDate?: string | null;
+};
+
