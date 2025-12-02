@@ -362,8 +362,7 @@ const UserPage = () => {
                       <p className="text-xs text-slate-600">
                         Password must be at least 10 characters, and
                         include an uppercase letter, a digit and a
-                        special character (according to your backend
-                        validator).
+                        special character.
                       </p>
 
                       <div className="grid gap-4 sm:grid-cols-2">
