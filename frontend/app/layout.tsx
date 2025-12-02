@@ -33,7 +33,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en-US" className={`${roboto.variable} ${poppins.variable}`}>
+    <html lang="en-US" className={`${roboto.variable} ${poppins.variable} sm:scroll-smooth`}>
       <head>
       </head>
       <body>

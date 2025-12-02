@@ -64,6 +64,7 @@
     transform: translateY(-10px);
     opacity: 0;
   }
+
   100% {
     transform: translateY(0);
     opacity: 1;
@@ -183,12 +184,14 @@
 
 
 body {
-  background: var(--bg);
-  background-size: 200% 200%;
-  color: var(--fg);
-  min-height: 100vh;
-  font-family: var(--font-body);
-  line-height: 1.6;
-  
-  animation: bg-breathe 18s ease-in-out infinite;
+  body {
+    background: var(--bg);
+    background-size: 200% 200%;
+    color: var(--fg);
+    min-height: 100vh;
+    font-family: var(--font-body);
+    line-height: 1.6;
+
+    animation: bg-breathe 18s ease-in-out infinite;
+  }
 }

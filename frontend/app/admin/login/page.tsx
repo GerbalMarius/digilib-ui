@@ -2,22 +2,25 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Spinner from "../../../ui/Spinner";
-import { useAuth } from "../../../lib/auth-context";
-import { getErrorMessagesFromError } from "../../../lib/http-error";
-import { LoginFormValues, parseFormData } from "../../../lib/form-utils";
+import Spinner from "../../ui/Spinner";
+import { useAuth } from "../../lib/auth-context";
+import { getErrorMessagesFromError } from "../../lib/http-error";
+import { LoginFormValues, parseFormData } from "../../lib/form-utils";
 import AdminLoginForm from "./AdminLoginForm";
 
 const AdminLoginPage = () => {
   const router = useRouter();
-  const { login, isAuthenticated, isLoading } = useAuth();
+  const { login, isAuthenticated, isLoading, user } = useAuth();
 
   const [isSubmitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
 
   useEffect(() => {
-    if (!isLoading && isAuthenticated) {
+    if (!isLoading && isAuthenticated && user?.roles?.some(r => r.includes("ADMIN"))) {
       router.replace("/admin");
+    }
+    else{
+      router.replace("/");
     }
   }, [isAuthenticated, isLoading, router]);
 

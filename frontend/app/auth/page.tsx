@@ -135,10 +135,10 @@ const AuthPage = () => {
         <div className="relative min-h-[calc(100vh-6rem)] flex items-center justify-center px-6 py-12">
             <Link
                 href="/"
-                className="absolute top-6 left-6 flex items-center gap-2
-                px-4 py-2 rounded-full bg-amber-700 backdrop-blur border border-amber-700 text-sm shadow-md 
-              hover:bg-amber-500 hover:border-amber-500
-                transform hover:translate-y-2 transition duration-300"
+                className="absolute z-30 top-6 left-6 flex items-center gap-2
+             px-4 py-2 rounded-full bg-amber-700 backdrop-blur border border-amber-700 text-sm shadow-md 
+             hover:bg-amber-500 hover:border-amber-500
+             transform transition duration-200 hover:-translate-y-0.5 active:translate-y-0"
             >
                 <Image
                     src={"/img/leave.svg"}
@@ -149,11 +149,12 @@ const AuthPage = () => {
             </Link>
 
             {/* CARD */}
-            <div className="w-full 
-                max-w-6xl rounded-3xl 
-                bg-white/80 shadow-2xl backdrop-blur-md border border-amber-100 overflow-hidden 
-                flex flex-col md:flex-row scale-[1.03]
-                transition-transform duration-300 ease-out"
+            <div
+                className="relative z-20 w-full 
+             max-w-6xl rounded-3xl 
+             bg-white/80 shadow-2xl backdrop-blur-md border border-amber-100 overflow-hidden 
+             flex flex-col md:flex-row scale-[1.03]
+             transition-transform duration-300 ease-out"
             >
                 {/* LEFT SIDEBAR */}
                 <aside className="md:w-5/12 bg-linear-to-br from-amber-200 via-amber-300 to-amber-400 text-slate-900 px-8 py-10 flex flex-col justify-center">
@@ -215,7 +216,7 @@ const AuthPage = () => {
                     <div className="mt-6 text-center text-xs md:text-sm text-slate-500">
                         Are you an administrator?{" "}
                         <Link
-                            href={activeTab === "login" ? "/auth/admin/login" : "/auth/admin/register"}
+                            href={activeTab === "login" ? "/admin/login" : "/admin/register"}
                             className="font-semibold text-amber-700 hover:text-amber-800"
                         >
                             {activeTab === "login" ? "Sign in" : "Register"} as admin

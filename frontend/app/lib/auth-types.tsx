@@ -4,6 +4,7 @@ export interface User {
     firstName: string;
     lastName: string;
     roles: string[];
+    isDisabled : boolean;
 };
 
 export interface RegisterData {

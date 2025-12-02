@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Spinner from "../../../ui/Spinner";
-import Eye from "../../../ui/Eye";
+import Spinner from "../../ui/Spinner";
+import Eye from "../../ui/Eye";
 
 interface AdminRegisterFormProps {
   isSubmitting: boolean;

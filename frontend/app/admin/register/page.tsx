@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Spinner from "../../../ui/Spinner";
-import { useAuth } from "../../../lib/auth-context";
-import { getErrorMessagesFromError } from "../../../lib/http-error";
-import { RegisterFormValues, parseFormData } from "../../../lib/form-utils";
+import Spinner from "../../ui/Spinner";
+import { useAuth } from "../../lib/auth-context";
+import { getErrorMessagesFromError } from "../../lib/http-error";
+import { RegisterFormValues, parseFormData } from "../../lib/form-utils";
 import AdminRegisterForm from "./AdminRegisterForm";
 
 type AdminRegisterFormValues = RegisterFormValues & {

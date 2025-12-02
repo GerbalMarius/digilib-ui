@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Spinner from "../../../ui/Spinner";
-import Eye from "../../../ui/Eye";
+import Spinner from "../../ui/Spinner";
+import Eye from "../../ui/Eye";
 
 interface AdminLoginFormProps {
   isSubmitting: boolean;
