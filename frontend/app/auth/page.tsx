@@ -191,7 +191,7 @@ const AuthPage = () => {
                                     }`}
                                 onClick={() => handleTabChange("register")}
                             >
-                                Register
+                                Sign Up
                             </button>
                         </div>
                     </div>

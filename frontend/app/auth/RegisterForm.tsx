@@ -138,7 +138,7 @@ const RegisterForm = ({
       >
         {/* Text fades out when loading */}
         <span className={isSubmitting ? "opacity-0" : "opacity-100"}>
-          Register
+          Sign Up
         </span>
 
         {/* Centered spinner overlay */}

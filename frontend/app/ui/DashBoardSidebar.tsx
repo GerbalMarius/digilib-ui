@@ -68,7 +68,7 @@ const DashBoardSidebar = ({
           </span>
         </div>
         <div>
-          <p className="text-sm font-semibold tracking-wide uppercase text-slate-100/90">
+          <p className={`text-sm font-semibold tracking-wide uppercase ${variant === 'admin' ? "text-slate-200" : "text-amber-800"}`}>
             {title}
           </p>
           <p className={`text-xs ${v.subtitle}`}>{subtitle}</p>

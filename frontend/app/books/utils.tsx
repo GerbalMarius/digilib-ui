@@ -9,6 +9,12 @@ export interface BookData {
     edition: string;
 }
 
+export interface ReservationData {
+  id: number;
+  barcode: string;
+  book: BookData;
+}
+
 
 export type SortOption = "title" | "isbn" | "publicationDate";
 

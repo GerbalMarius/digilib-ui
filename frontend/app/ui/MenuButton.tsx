@@ -3,13 +3,13 @@
 import Image from "next/image";
 import { Variant } from "../lib/page-utils";
 
-interface MenuButtonProps  {
+interface MenuButtonProps {
   active: boolean;
   label: string;
   iconSrc: string;
   onClick: () => void;
   variant?: Variant;
-};
+}
 
 const MENU_VARIANTS: Record<
   Variant,
@@ -20,9 +20,11 @@ const MENU_VARIANTS: Record<
     base: "text-slate-200 hover:bg-slate-800/70 hover:text-white",
   },
   user: {
-    active: "bg-white/95 text-amber-900 shadow-sm",
+    // darker, less “white” accents
+    active:
+      "bg-amber-100 text-amber-900 shadow-sm border border-amber-200",
     base:
-      "text-amber-50/95 hover:bg-amber-100/40 hover:text-amber-900",
+      "text-amber-900/80 hover:bg-amber-50 hover:text-amber-950",
   },
 };
 
