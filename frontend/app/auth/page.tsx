@@ -133,21 +133,6 @@ const AuthPage = () => {
 
     return (
         <div className="relative min-h-[calc(100vh-6rem)] flex items-center justify-center px-6 py-12">
-            <Link
-                href="/"
-                className="absolute z-30 top-6 left-6 flex items-center gap-2
-             px-4 py-2 rounded-full bg-amber-700 backdrop-blur border border-amber-700 text-sm shadow-md 
-             hover:bg-amber-500 hover:border-amber-500
-             transform transition duration-200 hover:-translate-y-0.5 active:translate-y-0"
-            >
-                <Image
-                    src={"/img/leave.svg"}
-                    alt="leave-btn"
-                    width={40}
-                    height={40}
-                />
-            </Link>
-
             {/* CARD */}
             <div
                 className="relative z-20 w-full 
@@ -156,6 +141,23 @@ const AuthPage = () => {
              flex flex-col md:flex-row scale-[1.03]
              transition-transform duration-300 ease-out"
             >
+                <Link
+                    href="/"
+                    className="
+                        absolute top-4 
+                        right-4           
+                        md:left-4         
+                        md:right-auto
+                        flex items-center gap-2
+                        px-3 py-1.5 rounded-full 
+                      bg-amber-700 border border-amber-700 backdrop-blur 
+                        text-sm shadow-md
+                      hover:bg-amber-500 hover:border-amber-500
+    transition duration-200 transform hover:-translate-y-0.5 active:translate-y-0
+  "
+                >
+                    <Image src="/img/leave.svg" alt="leave-btn" width={32} height={32} />
+                </Link>
                 {/* LEFT SIDEBAR */}
                 <aside className="md:w-5/12 bg-linear-to-br from-amber-200 via-amber-300 to-amber-400 text-slate-900 px-8 py-10 flex flex-col justify-center">
                     <h2 className="font-heading text-3xl md:text-4xl font-bold mb-3">
